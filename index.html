@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulário de Lead com UTM</title>
+  <style>
+    body { font-family: Arial; padding: 40px; background: #f9f9f9; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input { width: 300px; padding: 8px; margin-top: 5px; }
+    .hidden { display: none; }
+    .submit { margin-top: 20px; padding: 10px 20px; }
+  </style>
+</head>
+<body>
+  <h2>Formulário de Lead</h2>
+  <form action="#" method="post">
+    <!-- Campos visíveis -->
+    <label for="fullname">Nome:</label>
+    <input type="text" id="fullname" name="fullname" required>
+
+    <label for="email">E-mail:</label>
+    <input type="email" id="email" name="email" required>
+
+    <!-- Campos ocultos UTM -->
+    <input type="hidden" id="sol_utmsource" name="sol_utmsource">
+    <input type="hidden" id="sol_utmmedium" name="sol_utmmedium">
+    <input type="hidden" id="sol_utmcampaign" name="sol_utmcampaign">
+    <input type="hidden" id="sol_utmterm" name="sol_utmterm">
+
+    <input type="submit" value="Enviar" class="submit">
+  </form>
+
+  <!-- Script para capturar parâmetros UTM -->
+  <script>
+    function getUTMParameter(param) {
+      const regex = new RegExp("[\?&]" + param + "=([^&#]*)");
+      const results = regex.exec(window.location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+    window.addEventListener("load", function () {
+      const mappings = [
+        { param: "utm_source", fieldId: "sol_utmsource" },
+        { param: "utm_medium", fieldId: "sol_utmmedium" },
+        { param: "utm_campaign", fieldId: "sol_utmcampaign" },
+        { param: "utm_term", fieldId: "sol_utmterm" }
+      ];
+
+      mappings.forEach(item => {
+        const value = getUTMParameter(item.param);
+        const field = document.getElementById(item.fieldId);
+        if (field && value) {
+          field.value = value;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
