@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulário com UTM</title>
+  <meta charset="UTF-8">
+  <title>Formulário com UTM - Dynamics 365</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <h1>Formulário com Rastreio UTM</h1>
+  <h2>Formulário de Cadastro com Rastreio de UTM</h2>
 
-  <iframe id="utmForm" width="100%" height="800" frameborder="0"></iframe>
+  <!-- iFrame do formulário Dynamics -->
+  <iframe id="utmForm" width="100%" height="900" frameborder="0" style="border:1px solid #ccc;"></iframe>
 
   <script>
-    // Captura UTM da URL
+    // Função para capturar parâmetros da URL
     function getUTMParam(param) {
       const params = new URLSearchParams(window.location.search);
       return params.get(param) || '';
     }
 
-    // Monta a URL com os parâmetros
+    // Base do formulário Dynamics
     const baseURL = "https://assets-sam.mkt.dynamics.com/50c92ef0-554c-f011-8ee3-002248385fe1/digitalassets/standaloneforms/12129189-886d-f011-b4cc-002248e0c319";
+
+    // Monta os parâmetros UTM da URL
     const utmParams = new URLSearchParams({
       utm_source: getUTMParam('utm_source'),
       utm_medium: getUTMParam('utm_medium'),
@@ -26,7 +29,9 @@
       utm_term: getUTMParam('utm_term')
     });
 
-    document.getElementById('utmForm').src = `${baseURL}?${utmParams.toString()}`;
+    // Define o src do iFrame com os UTM aplicados
+    const iframe = document.getElementById('utmForm');
+    iframe.src = `${baseURL}?${utmParams.toString()}`;
   </script>
 </body>
 </html>
