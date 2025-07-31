@@ -3,42 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulário com UTM - Dynamics 365</title>
+  <title>Formulário com UTM</title>
 </head>
 <body>
-  <h1>Formulário de Cadastro</h1>
+  <h1>Formulário com Rastreio UTM</h1>
 
-  <div
-    data-form-id="12129189-886d-f011-b4cc-002248e0c319"
-    data-form-api-url="https://public-sam.mkt.dynamics.com/api/v1.0/orgs/50c92ef0-554c-f011-8ee3-002248385fe1/landingpageforms"
-    data-cached-form-url="https://assets1-sam.mkt.dynamics.com/50c92ef0-554c-f011-b4cc-002248e0c319">
-  </div>
-
-  <script src="https://cxppusa1formui01cdnsa01-endpoint.azureedge.net/sam/FormLoader/FormLoader.bundle.js"></script>
+  <iframe id="utmForm" width="100%" height="800" frameborder="0"></iframe>
 
   <script>
     // Captura UTM da URL
     function getUTMParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param) || '';
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param) || '';
     }
 
-    window.addEventListener('load', function () {
-      const tryFillUTM = setInterval(() => {
-        const source = document.querySelector('[name="sol_utmsource"]');
-        const medium = document.querySelector('[name="sol_utmmedium"]');
-        const campaign = document.querySelector('[name="sol_utmcampaign"]');
-        const term = document.querySelector('[name="sol_utmterm"]');
-
-        if (source && medium && campaign && term) {
-          source.value = getUTMParam('utm_source');
-          medium.value = getUTMParam('utm_medium');
-          campaign.value = getUTMParam('utm_campaign');
-          term.value = getUTMParam('utm_term');
-          clearInterval(tryFillUTM);
-        }
-      }, 500);
+    // Monta a URL com os parâmetros
+    const baseURL = "https://assets-sam.mkt.dynamics.com/50c92ef0-554c-f011-8ee3-002248385fe1/digitalassets/standaloneforms/12129189-886d-f011-b4cc-002248e0c319";
+    const utmParams = new URLSearchParams({
+      utm_source: getUTMParam('utm_source'),
+      utm_medium: getUTMParam('utm_medium'),
+      utm_campaign: getUTMParam('utm_campaign'),
+      utm_term: getUTMParam('utm_term')
     });
+
+    document.getElementById('utmForm').src = `${baseURL}?${utmParams.toString()}`;
   </script>
 </body>
 </html>
