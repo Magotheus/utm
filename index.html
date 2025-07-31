@@ -3,27 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Formulário com UTM</title>
+  <title>Formulário com UTM - Dynamics 365</title>
 </head>
 <body>
-  <h1>Bem-vindo! Preencha o formulário:</h1>
+  <h1>Formulário de Cadastro</h1>
 
   <div
     data-form-id="12129189-886d-f011-b4cc-002248e0c319"
     data-form-api-url="https://public-sam.mkt.dynamics.com/api/v1.0/orgs/50c92ef0-554c-f011-8ee3-002248385fe1/landingpageforms"
-    data-cached-form-url="https://assets1-sam.mkt.dynamics.com/50c92ef0-554c-f011-b4cc-002248385fe1/digitalassets/forms/12129189-886d-f011-b4cc-002248e0c319">
+    data-cached-form-url="https://assets1-sam.mkt.dynamics.com/50c92ef0-554c-f011-b4cc-002248e0c319">
   </div>
 
   <script src="https://cxppusa1formui01cdnsa01-endpoint.azureedge.net/sam/FormLoader/FormLoader.bundle.js"></script>
 
   <script>
-    // Função para extrair os parâmetros da URL
+    // Captura UTM da URL
     function getUTMParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param) || '';
     }
 
-    // Espera o formulário carregar
     window.addEventListener('load', function () {
       const tryFillUTM = setInterval(() => {
         const source = document.querySelector('[name="sol_utmsource"]');
@@ -38,7 +37,7 @@
           term.value = getUTMParam('utm_term');
           clearInterval(tryFillUTM);
         }
-      }, 500); // Tenta a cada 500ms até os campos estarem disponíveis
+      }, 500);
     });
   </script>
 </body>
