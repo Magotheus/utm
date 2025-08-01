@@ -12,10 +12,42 @@
   <div
     data-form-id="12129189-886d-f011-b4cc-002248e0c319"
     data-form-api-url="https://public-sam.mkt.dynamics.com/api/v1.0/orgs/50c92ef0-554c-f011-8ee3-002248385fe1/landingpageforms"
-    data-cached-form-url="https://assets1-sam.mkt.dynamics.com/50c92ef0-554c-f011-8ee3-002248385fe1/digitalassets/forms/12129189-886d-f011-b4cc-002248e0c319">
+    data-cached-form-url="https://assets1-sam.mkt.dynamics.com/50c92ef0-554c-f011-b4cc-002248385fe1/digitalassets/forms/12129189-886d-f011-b4cc-002248e0c319">
   </div>
 
+  <!-- Carrega o formulário -->
   <script src="https://cxppusa1formui01cdnsa01-endpoint.azureedge.net/sam/FormLoader/FormLoader.bundle.js"></script>
+
+  <!-- Script para capturar parâmetros UTM e preencher os campos ocultos -->
+  <script>
+    function getUTMParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        sol_utmsource: urlParams.get('utm_source') || '',
+        sol_utmcampaign: urlParams.get('utm_campaign') || '',
+        sol_utmmedium: urlParams.get('utm_medium') || '',
+        sol_utmterm: urlParams.get('utm_term') || '',
+        sol_utmcontent: urlParams.get('utm_content') || '',
+        sol_utmid: urlParams.get('utm_id') || ''
+      };
+    }
+
+    window.addEventListener('message', function (event) {
+      if (event.data?.type === 'd365mkt-form-loaded') {
+        const utms = getUTMParams();
+        const form = document.querySelector('form');
+
+        if (form) {
+          Object.keys(utms).forEach(key => {
+            const input = form.querySelector(`[name="${key}"]`);
+            if (input) {
+              input.value = utms[key];
+            }
+          });
+        }
+      }
+    });
+  </script>
 
 </body>
 </html>
