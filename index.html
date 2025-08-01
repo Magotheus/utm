@@ -2,52 +2,60 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Formulário com UTM - Dynamics 365</title>
+  <title>Teste UTM - Formulário Dynamics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-  <h1>Cadastro de Contato</h1>
+  <h1>Teste de Formulário com UTM</h1>
 
-  <!-- Embed do formulário Dynamics 365 -->
+  <!-- Formulário Dynamics 365 -->
   <div
     data-form-id="12129189-886d-f011-b4cc-002248e0c319"
     data-form-api-url="https://public-sam.mkt.dynamics.com/api/v1.0/orgs/50c92ef0-554c-f011-8ee3-002248385fe1/landingpageforms"
-    data-cached-form-url="https://assets-sam.mkt.dynamics.com/50c92ef0-554c-f011-8ee3-002248385fe1/digitalassets/standaloneforms/12129189-886d-f011-b4cc-002248e0c319">
+    data-cached-form-url="https://assets1-sam.mkt.dynamics.com/50c92ef0-554c-f011-8ee3-002248385fe1/digitalassets/forms/12129189-886d-f011-b4cc-002248e0c319">
   </div>
 
-  <!-- Script do Dynamics 365 para carregar o formulário -->
-  <script src="https://js.dynamicsforms.marketing.dynamics.com/ma/ma.js"></script>
+  <!-- Script para carregar o formulário -->
+  <script src="https://cxppusa1formui01cdnsa01-endpoint.azureedge.net/sam/FormLoader/FormLoader.bundle.js"></script>
 
-  <!-- Script para capturar e preencher parâmetros UTM -->
+  <!-- Script para capturar e preencher os campos UTM -->
   <script>
-    function setUTMToForm() {
-      const params = new URLSearchParams(window.location.search);
-      const utmMap = {
-        utm_source: "sol_utmsource",
-        utm_medium: "sol_utmmedium",
-        utm_campaign: "sol_utmcampaign",
-        utm_term: "sol_utmterm"
+    function getUTMParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        utm_source: urlParams.get('utm_source'),
+        utm_medium: urlParams.get('utm_medium'),
+        utm_campaign: urlParams.get('utm_campaign'),
+        utm_term: urlParams.get('utm_term'),
+        utm_content: urlParams.get('utm_content')
       };
-
-      const interval = setInterval(() => {
-        const form = document.querySelector("form");
-        if (!form) return;
-
-        for (const [utmParam, fieldName] of Object.entries(utmMap)) {
-          const value = params.get(utmParam);
-          if (value) {
-            const input = form.querySelector(`[name="${fieldName}"]`);
-            if (input) input.value = value;
-          }
-        }
-
-        clearInterval(interval);
-      }, 1000); // aguarda o carregamento do form
     }
 
-    window.addEventListener("DOMContentLoaded", setUTMToForm);
-  </script>
+    function fillUTMFields() {
+      const utms = getUTMParams();
+      const trySet = () => {
+        // Tente encontrar os campos ocultos do Dynamics
+        const source = document.querySelector("input[name='sol_utmsource']");
+        const medium = document.querySelector("input[name='sol_utmmedium']");
+        const campaign = document.querySelector("input[name='sol_utmcampaign']");
+        const term = document.querySelector("input[name='sol_utmterm']");
 
+        if (source && medium && campaign && term) {
+          source.value = utms.utm_source || '';
+          medium.value = utms.utm_medium || '';
+          campaign.value = utms.utm_campaign || '';
+          term.value = utms.utm_term || '';
+        } else {
+          // Tente novamente até o formulário estar carregado
+          setTimeout(trySet, 500);
+        }
+      };
+      trySet();
+    }
+
+    // Aguarde o carregamento do formulário
+    window.addEventListener("load", fillUTMFields);
+  </script>
 </body>
 </html>
