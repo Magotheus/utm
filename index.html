@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Formulário com UTM</title>
+  <title>Formulário com UTM - Dynamics 365</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -16,10 +16,10 @@
     data-cached-form-url="https://assets-sam.mkt.dynamics.com/50c92ef0-554c-f011-8ee3-002248385fe1/digitalassets/standaloneforms/12129189-886d-f011-b4cc-002248e0c319">
   </div>
 
-  <!-- Script do Dynamics -->
+  <!-- Script do Dynamics 365 para carregar o formulário -->
   <script src="https://js.dynamicsforms.marketing.dynamics.com/ma/ma.js"></script>
 
-  <!-- Script para captura de parâmetros UTM -->
+  <!-- Script para capturar e preencher parâmetros UTM -->
   <script>
     function setUTMToForm() {
       const params = new URLSearchParams(window.location.search);
@@ -43,7 +43,7 @@
         }
 
         clearInterval(interval);
-      }, 1000); // aguarda até o form carregar no DOM
+      }, 1000); // aguarda o carregamento do form
     }
 
     window.addEventListener("DOMContentLoaded", setUTMToForm);
